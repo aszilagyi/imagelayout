@@ -310,5 +310,5 @@ list of keywords and options follows.
 
 # AVAILABILITY
 
-The original **imagelayout.py** is hosted at [github](https://github.com/aszilagyi/imagelayout.py), and licensed
+The original **imagelayout.py** is hosted at [github](https://github.com/aszilagyi/imagelayout), and licensed
 as GPL-3.0.
