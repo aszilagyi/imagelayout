@@ -29,7 +29,8 @@ again.
 ## INSTALLATION
 
 Put `imagelayout.py` somewhere in your path and make it executable.
-If on Linux/Unix, put the man page `imagelayout.1` in your MANPATH, e.g.
+If on Linux/Unix, put the man page
+[`imagelayout.py.1`](docs/imagelayout.py.1) in your MANPATH, e.g.
 `/usr/local/man/man1`. 
 
 ## DEVELOPING THE CONFIGURATION FILE
