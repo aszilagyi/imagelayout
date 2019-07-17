@@ -409,7 +409,7 @@ def imagelayout(conf):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Arrange images into a layout',
-      epilog='See man page at https://github.com/aszilagyi/imagelayout/docs/imagelayout.md')
+      epilog='See man page at https://github.com/aszilagyi/imagelayout/docs/manu.md')
     parser.add_argument('-w', '--watch', action='store_true',
       help='Watch the config file and re-run upon detecting a change')
     parser.add_argument('-s', action='store_true', help='report image sizes and exit')
