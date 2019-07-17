@@ -26,18 +26,28 @@ program and the illustration is immediately re-generated, saving you
 from again starting up an image editor and doing the manual work
 again.
 
+## REQUIREMENTS
+
+**imagelayout.py** runs under Python 3.x, and needs
+[PyYAML](https://pypi.org/project/PyYAML/) and
+[Pillow](https://pypi.org/project/Pillow/) to be installed.
+
 ## INSTALLATION
 
 Put `imagelayout.py` somewhere in your path and make it executable.
 If on Linux/Unix, put the man page
 [`imagelayout.py.1`](docs/imagelayout.py.1) in your MANPATH, e.g.
-`/usr/local/man/man1`. 
+`/usr/local/man/man1`.
+
+## DOCUMENTATION
+
+See the [man page](docs/manu.md) for detailed instructions.
 
 ## DEVELOPING THE CONFIGURATION FILE
 
 The configuration file uses the YAML format which is an intuitive,
 human-readable language, easily written manually. See the [man
-page](manu.md) for a detailed specification of the configuration file.
+page](docs/manu.md) for a detailed specification of the configuration file.
 A quick introduction to the general YAML syntax can be found
 [here](https://github.com/darvid/trine/wiki/YAML-Primer).
 
