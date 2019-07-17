@@ -269,8 +269,8 @@ A combination of the words (\f[C]top\f[R], \f[C]center\f[R],
 \f[C]right\f[R]), separated with a dash (no space in between!).
 Default: \f[C]top-left\f[R].
 .IP \[bu] 2
-\f[B]offset:\f[R]
-\f[C][\f[R]\f[B]\f[BI]xoffset\f[B]\f[R]\f[C], \f[R]\f[B]\f[BI]yoffset\f[B]\f[R]\f[C]]\f[R]
+\f[B]offset:\f[R] \f[B][ \f[BI]xoffset\f[B]\f[R],
+\f[B]\f[BI]yoffset\f[B] ]\f[R]
 .PD 0
 .P
 .PD
@@ -460,8 +460,8 @@ not be resized.
 Which algorithm to use to resize the individual images.
 Default: \f[C]nearest\f[R].
 .IP \[bu] 2
-\f[B]pixelscaling:\f[R] \f[B]\f[BI]scale\f[B]\f[R] | [
-\f[B]\f[BI]xscale\f[B]\f[R], \f[B]\f[BI]yscale\f[B]\f[R] ]
+\f[B]pixelscaling:\f[R] \f[B]\f[BI]scale\f[B] | [ \f[BI]xscale\f[B],
+\f[BI]yscale\f[B] ]\f[R]
 .PD 0
 .P
 .PD
@@ -532,7 +532,7 @@ Default: white.
 .P
 .PD
 Specify how labels should be added to the individual images.
-Some of these settings can be overridden for each individual image.
+These settings can be overridden for each individual image.
 .RS 2
 .IP \[bu] 2
 \f[B]add:\f[R] \f[C]yes\f[R]|\f[B]\f[CB]no\f[B]\f[R]
@@ -577,19 +577,14 @@ Position of the label relative to the image.
 A combination of the words (\f[C]top\f[R], \f[C]center\f[R],
 \f[C]bottom\f[R]) and (\f[C]left\f[R], \f[C]center\f[R],
 \f[C]right\f[R]), separated with a dash (no space in between!).
-Can be overridden with the \f[B]labelpos\f[R] parameter for any
-individual image.
 Default: \f[C]top-left\f[R].
 .IP \[bu] 2
-\f[B]offset:\f[R]
-\f[C][\f[R]\f[B]\f[BI]xoffset\f[B]\f[R]\f[C], \f[R]\f[B]\f[BI]yoffset\f[B]\f[R]\f[C]]\f[R]
+\f[B]offset:\f[R] \f[B][ \f[BI]xoffset\f[B], \f[BI]yoffset\f[B] ]\f[R]
 .PD 0
 .P
 .PD
 Offset, in pixels, for the label, relative to the position defined in
 \f[B]pos\f[R].
-Can be overridden with the \f[B]labeloffset\f[R] parameter for any
-individual image.
 Default: \f[C][0, 0]\f[R]
 .RE
 .IP \[bu] 2

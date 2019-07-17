@@ -118,7 +118,7 @@ Font size in pixels.</li>
 Font color. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>.</li>
 <li><strong>pos:</strong> (<strong><code>top</code></strong>|<code>center</code>|<code>bottom</code>)<code>-</code>(<strong><code>left</code></strong>|<code>center</code>|<code>right</code>)<br />
 Position of the label relative to the image. A combination of the words (<code>top</code>, <code>center</code>, <code>bottom</code>) and (<code>left</code>, <code>center</code>, <code>right</code>), separated with a dash (no space in between!). Default: <code>top-left</code>.</li>
-<li><strong>offset:</strong> <code>[</code><strong><em>xoffset</em></strong><code>, </code><strong><em>yoffset</em></strong><code>]</code><br />
+<li><strong>offset:</strong> <strong>[ <em>xoffset</em></strong>, <strong><em>yoffset</em> ]</strong><br />
 Offset, in pixels, for the label, relative to the position defined in <strong>pos</strong>. Default: <code>[0, 0]</code></li>
 </ul></li>
 <li><strong>fixedsize:</strong> <strong><code>no</code></strong> | <code>yes</code><br />
@@ -170,7 +170,7 @@ The final width of the output image after joining the individual images. The ima
 The final height of the output image after joining the individual images. The image will be resized to fit this value, retaining the aspect ratio unless <strong>finalwidth</strong> is also given. Note that this is before the <strong>title</strong> and the <strong>globalborder</strong> are added. Optional. If not given, and <strong>finalwidth</strong> is also omitted, the image will not be resized.</p></li>
 <li><p><strong>resizemethod:</strong> <strong><code>nearest</code></strong>|<code>bilinear</code>|<code>bicubic</code>|<code>lanczos</code><br />
 Which algorithm to use to resize the individual images. Default: <code>nearest</code>.</p></li>
-<li><p><strong>pixelscaling:</strong> <strong><em>scale</em></strong> | [ <strong><em>xscale</em></strong>, <strong><em>yscale</em></strong> ]<br />
+<li><p><strong>pixelscaling:</strong> <strong><em>scale</em> | [ <em>xscale</em>, <em>yscale</em> ]</strong><br />
 Apply this scaling factor to all pixel sizes. Default: 1. This parameter allows one to easily resize the output image without having to separately adjust the font sizes, border sizes, offsets, line coordinates, etc. For example, <code>pixelscale: 0.5</code> will result in a half-size image, <code>pixelscale: 2.0</code> in a double-size image.</p></li>
 <li><p><strong>autocrop:</strong> <strong><code>no</code></strong>|<code>yes</code><br />
 If set to <code>yes</code>, all individual images will be autocropped. This can be overridden with the <strong>autocrop</strong> parameter for any individual image.</p></li>
@@ -185,7 +185,7 @@ Border size. A single number, or a list of 2 or 4 numbers. A single number speci
 Color of the border. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>. Default: white.</li>
 </ul></li>
 <li><p><strong>labels:</strong><br />
-Specify how labels should be added to the individual images. Some of these settings can be overridden for each individual image.</p>
+Specify how labels should be added to the individual images. These settings can be overridden for each individual image.</p>
 <ul>
 <li><strong>add:</strong> <code>yes</code>|<strong><code>no</code></strong><br />
 Whether to add labels. Default: no.</li>
@@ -196,9 +196,9 @@ Font size in pixels. Default: 32</li>
 <li><strong>fontcolor:</strong> <strong><em>colorspec</em></strong><br />
 Font color. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>. Default: black.</li>
 <li><strong>pos:</strong> (<strong><code>top</code></strong>|<code>center</code>|<code>bottom</code>)<code>-</code>(<strong><code>left</code></strong>|<code>center</code>|<code>right</code>)<br />
-Position of the label relative to the image. A combination of the words (<code>top</code>, <code>center</code>, <code>bottom</code>) and (<code>left</code>, <code>center</code>, <code>right</code>), separated with a dash (no space in between!). Can be overridden with the <strong>labelpos</strong> parameter for any individual image. Default: <code>top-left</code>.</li>
-<li><strong>offset:</strong> <code>[</code><strong><em>xoffset</em></strong><code>, </code><strong><em>yoffset</em></strong><code>]</code><br />
-Offset, in pixels, for the label, relative to the position defined in <strong>pos</strong>. Can be overridden with the <strong>labeloffset</strong> parameter for any individual image. Default: <code>[0, 0]</code></li>
+Position of the label relative to the image. A combination of the words (<code>top</code>, <code>center</code>, <code>bottom</code>) and (<code>left</code>, <code>center</code>, <code>right</code>), separated with a dash (no space in between!). Default: <code>top-left</code>.</li>
+<li><strong>offset:</strong> <strong>[ <em>xoffset</em>, <em>yoffset</em> ]</strong><br />
+Offset, in pixels, for the label, relative to the position defined in <strong>pos</strong>. Default: <code>[0, 0]</code></li>
 </ul></li>
 <li><p><strong>globallabels:</strong><br />
 Add arbitrary labels to the final image. Note: they will be added before adding the <strong>globalborder</strong>.</p>

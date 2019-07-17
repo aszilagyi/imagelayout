@@ -153,7 +153,7 @@ list of keywords and options follows.
               Font color. A color name like `red`, an RGB color specified as `#rrggbb` or `rgb(red, green, blue)` with values between 0 and 255 or percentages, or a HSL color as `hsl(hue, saturation%, lightness%)`.
             * **pos:** (**`top`**|`center`|`bottom`)`-`(**`left`**|`center`|`right`)\
               Position of the label relative to the image. A combination of the words (`top`, `center`, `bottom`) and (`left`, `center`, `right`), separated with a dash (no space in between!). Default: `top-left`.
-            * **offset:** `[`**_xoffset_**`, `**_yoffset_**`]`\
+            * **offset:** **[ _xoffset_**, **_yoffset_ ]**\
               Offset, in pixels, for the label, relative to the position defined in **pos**. Default: `[0, 0]`
         * **fixedsize:** **`no`** | `yes`\
           If `yes`, the image will never be resized during the layout (it may still be resized along with the final image if the **finalwidth** or **finalheight** option is used). Instead, padding will be used (either on the top and bottom or on left and right of the image) to fit the image to its neighbors. The color of the padding is determined by the **paddingcolor** toplevel parameter (default is white).
@@ -203,7 +203,7 @@ list of keywords and options follows.
   The final height of the output image after joining the individual images. The image will be resized to fit this value, retaining the aspect ratio unless **finalwidth** is also given. Note that this is before the **title** and the **globalborder** are added. Optional. If not given, and **finalwidth** is also omitted, the image will not be resized.
 * **resizemethod:** **`nearest`**|`bilinear`|`bicubic`|`lanczos`\
   Which algorithm to use to resize the individual images. Default: `nearest`. 
-* **pixelscaling:** **_scale_** | [ **_xscale_**, **_yscale_** ]\
+* **pixelscaling:** **_scale_ | [ _xscale_, _yscale_ ]**\
   Apply this scaling factor to all pixel sizes. Default: 1. This parameter allows one to easily resize the output image without having to separately adjust the font sizes, border sizes, offsets, line coordinates, etc. For example, `pixelscale: 0.5` will result in a half-size image, `pixelscale: 2.0` in a double-size image.
 * **autocrop:** **`no`**|`yes`\
   If set to `yes`, all individual images will be autocropped. This can be overridden with the **autocrop** parameter for any individual image.
@@ -216,7 +216,7 @@ list of keywords and options follows.
     * **color:** **_colorspec_**\
       Color of the border. A color name like `red`, an RGB color specified as `#rrggbb` or `rgb(red, green, blue)` with values between 0 and 255 or percentages, or a HSL color as `hsl(hue, saturation%, lightness%)`. Default: white.
 * **labels:**\
-  Specify how labels should be added to the individual images. Some of these settings can be overridden for each individual image.
+  Specify how labels should be added to the individual images. These settings can be overridden for each individual image.
     * **add:** `yes`|**`no`**\
       Whether to add labels. Default: no.
     * **fontname:** **_fontname_**\
@@ -226,9 +226,9 @@ list of keywords and options follows.
     * **fontcolor:** **_colorspec_**\
       Font color. A color name like `red`, an RGB color specified as `#rrggbb` or `rgb(red, green, blue)` with values between 0 and 255 or percentages, or a HSL color as `hsl(hue, saturation%, lightness%)`. Default: black.
     * **pos:** (**`top`**|`center`|`bottom`)`-`(**`left`**|`center`|`right`)\
-      Position of the label relative to the image. A combination of the words (`top`, `center`, `bottom`) and (`left`, `center`, `right`), separated with a dash (no space in between!). Can be overridden with the **labelpos** parameter for any individual image. Default: `top-left`.
-    * **offset:** `[`**_xoffset_**`, `**_yoffset_**`]`\
-      Offset, in pixels, for the label, relative to the position defined in **pos**. Can be overridden with the **labeloffset** parameter for any individual image. Default: `[0, 0]`
+      Position of the label relative to the image. A combination of the words (`top`, `center`, `bottom`) and (`left`, `center`, `right`), separated with a dash (no space in between!). Default: `top-left`.
+    * **offset:** **[ _xoffset_, _yoffset_ ]**\
+      Offset, in pixels, for the label, relative to the position defined in **pos**. Default: `[0, 0]`
 * **globallabels:**\
   Add arbitrary labels to the final image. Note: they will be added before adding the **globalborder**.
     * **fontname:** **_fontname_**\
