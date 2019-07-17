@@ -69,7 +69,7 @@ the final image. This is useful e.g. to avoid font sizes becoming
 different when images containing text are combined.
 
 More details on how to specify the layout can be found in the [man
-page](manu.md).
+page](docs/manu.md).
 
 ## EXAMPLE
 
