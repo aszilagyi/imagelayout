@@ -20,20 +20,20 @@ paddingcolor: white
 labels:
   add: yes
   fontname: Arial_Bold
-  fontsize: 36
+  fontsize: 24
 autocrop: yes
 border:
-  size: 60
+  size: 40
   color: white
-finalwidth: 1200
+finalwidth: 800
 title:
   add: yes
   text: imagelayout demo image
   fontname: Arial_Bold
-  fontsize: 75
+  fontsize: 50
   fontcolor: red
-  height: 100
+  height: 70
 globalborder:
-  size: 15
+  size: 10
   color: white
-pixelscaling: 0.66
+
