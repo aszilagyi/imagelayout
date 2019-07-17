@@ -95,6 +95,29 @@ joined E and F. The result is:
 The full configuration file is
 [imagelayout_demo.yaml](demo/imagelayout_demo.yaml).
 
+## IMAGE GRID
+
+To create a grid of images, either horizontally joined images should
+be joined vertically:
+
+```
+layout:
+  vjoin:
+    - hjoin: [A, B, C]
+    - hjoin: [D, E, F]
+    - hjoin: [G, H, I]
+```
+
+or the other way around:
+
+```
+layout:
+  hjoin:
+    - vjoin: [A, D, G]
+    - vjoin: [B, E, H]
+    - vjoin: [C, F, I]
+```
+
 ## SINGLE-IMAGE USE
 
 Although the main purpose of **imagelayout.py** is to combine multiple
