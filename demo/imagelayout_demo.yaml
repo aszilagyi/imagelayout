@@ -1,0 +1,39 @@
+#!../imagelayout.py
+# imagelayout demo file (yaml format)
+images:
+  A: 2D_plot_of_Mobius_function.png
+  B: Water_PH.png
+  C: Cyclone_-_GIF.gif
+  D: 
+    file: PDE_example.gif
+    fixedsize: no
+  E: Word_cooccurrence.jpg
+  F: TL-SiO2-Na2O-CaO.gif
+layout:
+  hjoin:
+    - vjoin:
+      - hjoin: [A, B, C]
+      - D
+    - vjoin: [E, F]
+outputfile: demo_out.png
+paddingcolor: white
+labels:
+  add: yes
+  fontname: Arial_Bold
+  fontsize: 36
+autocrop: yes
+border:
+  size: 60
+  color: white
+finalwidth: 1200
+title:
+  add: yes
+  text: imagelayout demo image
+  fontname: Arial_Bold
+  fontsize: 75
+  fontcolor: red
+  height: 100
+globalborder:
+  size: 15
+  color: white
+pixelscaling: 0.66

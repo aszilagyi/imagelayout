@@ -1,0 +1,87 @@
+# template configuration file for imagelayout.py
+# Note: this file is only to illustrate the options available.
+# copy/modify/comment/uncomment/delete/etc. the lines you need
+# see man page for detailed descriptions of options
+#
+inputdir: . # input images are here (optional)
+images: # input images are specified here
+  A: filename1.png # use this form if you don't specify anything else for this image
+  B: filename2.jpg
+  C: # we specify other options for this file
+    file: filename3.gif
+    label: K # use this for label with default properties
+  D:
+    file: filename4.jpg
+    label: # specify label properties
+      text: mylabel # use "mylabel" instead of "D" for this image as a label
+      fontname: Arial_Bold # optional, supersedes global setting for this image
+      fontsize: 30 # in pixels
+      fontcolor: red
+      pos: center left
+      offset: [10, 10] # in pixels
+    fixedsize: yes # use padding for this image instead of resizing
+  E:
+    file: filename5.jpg
+    crop: [10, 20] # crop 10px left/right and 20px top/bottom
+    border: # add a border
+      size: [30, 10] # 30px left/right, 10px top/bottom
+      color: '#fa105e' # use quotes as # is taken as comment otherwise
+layout: # layout is defined here
+  vjoin:
+    - hjoin: [A, B]
+    - C
+    - hjoin:
+        - D
+	- E
+outputfile: output.png # extension determines file type
+finalwidth: 1024 # in pixels, resize output to this width
+finalheight: 800 # resize output to this height
+resizemethod: nearest # can be bilinear, bicubic, lanczos
+autocrop: no # for all images
+paddingcolor: white # for padding and background color
+border: # draw border around each input image
+  size: 30 # pixels
+  color: gray
+labels: how to label the images
+  add: yes # default is no
+  fontname: FreeSans # global setting, can be superseded for individual images
+  fontsize: 32
+  fontcolor: black
+  pos: top right
+  offset: [5, 5]
+globallabels: # add arbitrary labels to final image
+  fontname: FreeSans # global setting for globallabels
+  fontsize: 24
+  fontcolor: blue
+  labellist: # you list the actual labels here
+    - text: My label
+      coords: [100, 200]
+      fontname: Arial_Bold # optional, supersedes global setting for this label
+      fontsize: 12 # optional
+      fontcolor: green
+    - text: "Multiline\nlabel"
+      coords: [200, 300]
+      align: center # justification for multiline labels
+    - text: Third label
+      coords: [480, 500]
+title: # add a title to output image (always top-center)
+  add: yes
+  text: This is my illustration
+  fontname: FreeSans
+  fontsize: 50
+  fontcolor: red
+  bgcolor: '#c0c0ff'
+  height: 150 # default is 1.1*fontsize
+lines: # add arbitrary lines to the output image
+  width: 3 # line width
+  color: blue
+  linelist: # list the lines
+    - fromto: [10, 10, 20, 300] # from point to point
+      width: 5 # supersedes global setting for this line
+      color: black # supersedes global setting for this line
+    - fromto: [25, 40, 200, 50]
+      arrowsize: 30 # draw an arrowhead with this size
+    - fromto: [200, 200, 50, 50]
+globalborder: # draw arrow around whole output image
+  size: [10, 20, 10, 30] # left, top, right, bottom width
+  color: white

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Andras Szilagyi" />
+  <title>imagelayout.py(1) imagelayout.py v1.0 | Version 1.0</title>
+  <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">imagelayout.py(1) imagelayout.py v1.0 | Version 1.0</h1>
+<p class="author">Andras Szilagyi</p>
+<p class="date">July 2019</p>
+</header>
+<h1 id="name">NAME</h1>
+<p><strong>imagelayout.py</strong> - arrange images into a large image according to a layout</p>
+<h1 id="synopsys">SYNOPSYS</h1>
+<p><strong>imagelayout.py</strong> [<strong>-w</strong>|<strong>--watch</strong>] <em>configfile</em></p>
+<h1 id="description">DESCRIPTION</h1>
+<p><strong>imagelayout.py</strong> arranges several images according to a predefined layout and produces a larger image consisting of the sub-images. It can optionally label the individual images. Additional features include the ability to crop and add borders to the images, to add a border and a title to the final image, and to add arbitrary labels and lines or arrows to the final image. The intended use of <strong>imagelayout.py</strong> is the creation of figures from sub-figures for articles and science publications. <strong>imagelayout.py</strong> is a command-line Python application guided by a configuration file; it has no graphical interface or interactive features. Thus, it is suitable for use in scripts, Makefiles, and automated and reproducible workflows.</p>
+<h1 id="options">OPTIONS</h1>
+<ul>
+<li><strong>-w, --watch</strong><br />
+Run once, then watch the configuration file for changes and re-run whenever a<br />
+change is detected. This is useful for developing the configuration file and making adjustments. <strong>Tip:</strong> View the output image file with a viewer that also watches the image file and reloads it when it changes. <code>feh</code> for Linux systems is such a viewer, e.g. <code>feh -r 0.5 out.png</code> will reload <code>out.png</code> every 0.5 seconds.</li>
+</ul>
+<h1 id="defining-the-image-layout">DEFINING THE IMAGE LAYOUT</h1>
+<p>The desired layout of the images can be defined as a combination of horizontally and vertically joined images. Two keywords are used for this in the configuration file. The <code>hjoin</code> keyword defines a horizontally joined image sequence, e.g.</p>
+<pre><code>layout:
+  hjoin: [A, B, C]
+</code></pre>
+<p>will result in the following image arrangement:</p>
+<pre><code>+---+---+---+
+| A | B | C |
++---+---+---+
+</code></pre>
+<p>while the <code>vjoin</code> keyword produces a vertical arrangement:</p>
+<pre><code>layout:
+  vjoin: [A, B, C]
+</code></pre>
+<p>will result in this arrangement:</p>
+<pre><code>+---+
+| A |
++---+
+| B |
++---+
+| C |
++---+
+</code></pre>
+<p>More complex layouts can be defined by combining and nesting the <code>hjoin</code> and <code>vjoin</code> specifications. For example,</p>
+<pre><code>hjoin:
+  - vjoin:
+      - hjoin: [A, B]
+      - C
+  - D
+</code></pre>
+<p>results in this layout:</p>
+<pre><code>+---+---+---+
+| A | B |   |
++---+---+ D |
+|   C   |   |
++-------+---+
+</code></pre>
+<p>Horizontally joined images will be resized to fit the same height (the highest image), and vertically joined images will be resized to fit the same width (the widest image). If the <strong>fixedsize</strong> option is used for an image, it will be padded rather than scaled.</p>
+<h1 id="configuration-file">CONFIGURATION FILE</h1>
+<p>The only command line argument to <strong>imagelayout.py</strong> is the configuration file <em>configfile</em>, which should be written as a YAML format file, and contains all information about the input/output files, the layout, and the requested operations.</p>
+<p>The two main mandatory parts of the configuration file are the <strong>images</strong> section and the <strong>layout</strong> section; in addition the output file must also be specified using the <strong>outputfile</strong> keyword. The simplest configuration file may look something like this:</p>
+<pre><code>images:
+  A: imageA.png
+  B: imageB.png
+outputfile: out.png
+layout:
+  hjoin: [A, B]
+</code></pre>
+<p>This will produce the file <code>out.png</code> consisting of <code>imageA.png</code> and <code>imageB.png</code> joined horizontally. If the</p>
+<pre><code>labels:
+  add: yes
+</code></pre>
+<p>lines are added then each image will be labeled in the top left corner with the letters A and B, respectively.</p>
+<p>The configuration file may contain numerous other keywords and options to specify image labels, font names, font sizes and colors, cropping images or adding borders to them, adding a title, adding arbitrary labels, lines, and arrows to the final image. The detailed list of keywords and options follows.</p>
+<h1 id="complete-list-of-configuration-file-options">COMPLETE LIST OF CONFIGURATION FILE OPTIONS</h1>
+<h2 id="imagelayout-yaml-configuration-file">imagelayout yaml configuration file</h2>
+<ul>
+<li><p><strong>inputdir:</strong> <em><strong>directoryname</strong></em><br />
+Input directory; input image files will be loaded from here</p></li>
+<li><p><strong>images:</strong><br />
+Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters.</p>
+<ul>
+<li><strong><em>imageid</em>:</strong> <strong><em>filename</em></strong><br />
+An identifier and a filename. If you don't want to specify any further parameters for the image other than the filename then this form can be used. Otherwise, see below.</li>
+<li><strong><em>imageid</em>:</strong><br />
+An identifier for an image
+<ul>
+<li><strong>file:</strong> <strong><em>filename</em></strong><br />
+Name of the image file</li>
+<li><strong>label:</strong> <strong><em>label</em></strong><br />
+A label for the image. A text string if you don't want to specify any parameters such as position, font, color, etc; in this case the parameters specified in the toplevel <strong>labels</strong> option will be used. If you want to specify further parameters here then provide a mapping (see next line). Optional; if omitted then the image identifier will be used for labeling.</li>
+<li><strong>label:</strong><br />
+A label for the image along with parameters such as position, font, etc. These parameters will override those given in the toplevel <strong>labels</strong> option.
+<ul>
+<li><strong>text:</strong> <strong><em>labeltext</em></strong><br />
+Text of the label; if omitted then the image identifier will be used.</li>
+<li><strong>fontname:</strong> <strong><em>fontname</em></strong><br />
+Name of a truetype font available on the system. Example: <code>Arial_Bold</code>.</li>
+<li><strong>fontsize:</strong> <strong><em>size</em></strong><br />
+Font size in pixels.</li>
+<li><strong>fontcolor:</strong> <strong><em>colorspec</em></strong><br />
+Font color. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>.</li>
+<li><strong>pos:</strong> (<strong><code>top</code></strong>|<code>center</code>|<code>bottom</code>)<code>-</code>(<strong><code>left</code></strong>|<code>center</code>|<code>right</code>)<br />
+Position of the label relative to the image. A combination of the words (<code>top</code>, <code>center</code>, <code>bottom</code>) and (<code>left</code>, <code>center</code>, <code>right</code>), separated with a dash (no space in between!). Default: <code>top-left</code>.</li>
+<li><strong>offset:</strong> <code>[</code><strong><em>xoffset</em></strong><code>, </code><strong><em>yoffset</em></strong><code>]</code><br />
+Offset, in pixels, for the label, relative to the position defined in <strong>pos</strong>. Default: <code>[0, 0]</code></li>
+</ul></li>
+<li><strong>fixedsize:</strong> <strong><code>no</code></strong> | <code>yes</code><br />
+If <code>yes</code>, the image will never be resized during the layout (it may still be resized along with the final image if the <strong>finalwidth</strong> or <strong>finalheight</strong> option is used). Instead, padding will be used (either on the top and bottom or on left and right of the image) to fit the image to its neighbors. The color of the padding is determined by the <strong>paddingcolor</strong> toplevel parameter (default is white).</li>
+<li><strong>autocrop:</strong> <strong><code>no</code></strong>|<code>yes</code><br />
+If <code>yes</code>, the image will be autocropped using the color of the top-left pixel.</li>
+<li><strong>crop:</strong> <strong><em>width</em> | [ <em>xwidth, ywidth</em> ] | [ <em>leftwidth</em>, <em>topwidth</em>, <em>rightwidth</em>, <em>bottomwidth</em> ]</strong><br />
+Crop the image on all four sides. A single number specifies the width of a uniform crop. Two numbers refer to the left/right and top/bottom crop widths. If four numbers are given, the crop widths of all four sides can be specified separately. Optional.</li>
+<li><strong>border:</strong><br />
+Optionally add a border to the image.
+<ul>
+<li><strong>size:</strong> <strong><em>width</em> | [ <em>xwidth</em>, <em>ywidth</em> ] | [ <em>leftwidth</em>, <em>topwidth</em>, <em>rightwidth</em>, <em>bottomwidth</em> ]</strong><br />
+Border size. A single number, or a list of 2 or 4 numbers. A single number specifies the width of a uniform border. Two numbers refer to the left/right and top/bottom widths of the border. If four numbers are given, the widths of the border on all four sides can be specified separately. If not specified then the <strong>size</strong> defined under the top-level <strong>border</strong> property will be used; or zero if there is no top-level <strong>border</strong> property.</li>
+<li><strong>color:</strong> <strong><em>colorspec</em></strong><br />
+Color of the border. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>. Default: white.</li>
+</ul></li>
+</ul></li>
+<li><strong><em>imageid</em>:</strong> ...<br />
+Any number of further images can be specified.</li>
+</ul></li>
+<li><p><strong>layout:</strong><br />
+The layout of the output image is specified here. It can be omitted if there is only one input image.</p>
+<ul>
+<li><p><strong>vjoin | hjoin:</strong><br />
+Join the following images vertically (<strong>vjoin</strong>) or horizontally (<strong>hjoin</strong>). Must be followed by a list of the images to join. List elements can be further <strong>hjoin</strong>/<strong>vjoin</strong> lists and individual images. The list can be specified either on the same line in bracket notation (e.g. <code>vjoin: [A, B, C]</code>) or on separate lines using the dash notation, e.g.</p>
+<pre><code>vjoin:
+  - A
+  - B
+  - C
+</code></pre>
+<ul>
+<li><p><strong>- vjoin: | hjoin: | <em>imageid</em></strong><br />
+List element: another list of images to join vertically or horizontally, or an image identifier for an individual image.</p></li>
+<li><p>... <br />
+Images and <strong>vjoin</strong>/<strong>hjoin</strong> lists can be arbitrarily combined and nested. Example:</p>
+<pre><code>vjoin:
+  - hjoin: [A, B, C]
+  - hjoin:
+    - D
+    - vjoin: [E, F]
+</code></pre></li>
+</ul></li>
+</ul></li>
+<li><p><strong>outputfile:</strong> <strong><em>filename</em></strong><br />
+Name of the output file relative to the current directory. The extension will determine the image file type. See <a href="https://pillow.readthedocs.io/en/3.1.x/handbook/image-file-formats.html">Pillow documentation</a> for the available file formats.</p></li>
+<li><p><strong>finalwidth:</strong> <strong><em>size</em></strong><br />
+The final width of the output image after joining the individual images. The image will be resized to fit this value, retaining the aspect ratio unless <strong>finalheight</strong> is also provided. Note that this is before the <strong>title</strong> and the <strong>globalborder</strong> are added. Optional. If not given, and <strong>finalheight</strong> is also omitted, the image will not be resized.</p></li>
+<li><p><strong>finalheight:</strong> <strong><em>size</em></strong><br />
+The final height of the output image after joining the individual images. The image will be resized to fit this value, retaining the aspect ratio unless <strong>finalwidth</strong> is also given. Note that this is before the <strong>title</strong> and the <strong>globalborder</strong> are added. Optional. If not given, and <strong>finalwidth</strong> is also omitted, the image will not be resized.</p></li>
+<li><p><strong>resizemethod:</strong> <strong><code>nearest</code></strong>|<code>bilinear</code>|<code>bicubic</code>|<code>lanczos</code><br />
+Which algorithm to use to resize the individual images. Default: <code>nearest</code>.</p></li>
+<li><p><strong>pixelscaling:</strong> <strong><em>scale</em></strong> | [ <strong><em>xscale</em></strong>, <strong><em>yscale</em></strong> ]<br />
+Apply this scaling factor to all pixel sizes. Default: 1. This parameter allows one to easily resize the output image without having to separately adjust the font sizes, border sizes, offsets, line coordinates, etc. For example, <code>pixelscale: 0.5</code> will result in a half-size image, <code>pixelscale: 2.0</code> in a double-size image.</p></li>
+<li><p><strong>autocrop:</strong> <strong><code>no</code></strong>|<code>yes</code><br />
+If set to <code>yes</code>, all individual images will be autocropped. This can be overridden with the <strong>autocrop</strong> parameter for any individual image.</p></li>
+<li><p><strong>paddingcolor:</strong> <strong><em>colorspec</em></strong><br />
+Color to use for the padding if the <strong>fixedsize</strong> option is used for any image. This will also be the background color of the whole image, which will become visible if any of the input images has transparency or an alpha channel. Default: white.</p></li>
+<li><p><strong>border:</strong><br />
+Draw a border around around each individual image before joining them. The border parameters defined here will be used as defaults, and can be overridden for each indivual image.</p>
+<ul>
+<li><strong>size:</strong> <strong><em>width</em> | [ <em>xwidth</em>, <em>ywidth</em> ] | [ <em>leftwidth</em>, <em>topwidth</em>, <em>rightwidth</em>, <em>bottomwidth</em> ]</strong><br />
+Border size. A single number, or a list of 2 or 4 numbers. A single number specifies the width of a uniform border. Two numbers refer to the left/right and top/bottom widths of the border. If four numbers are given, the widths of the border on all four sides can be specified separately. Default: 10.</li>
+<li><strong>color:</strong> <strong><em>colorspec</em></strong><br />
+Color of the border. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>. Default: white.</li>
+</ul></li>
+<li><p><strong>labels:</strong><br />
+Specify how labels should be added to the individual images. Some of these settings can be overridden for each individual image.</p>
+<ul>
+<li><strong>add:</strong> <code>yes</code>|<strong><code>no</code></strong><br />
+Whether to add labels. Default: no.</li>
+<li><strong>fontname:</strong> <strong><em>fontname</em></strong><br />
+Name of a truetype font available on the system. Example: <code>Arial_Bold</code>. Default: FreeSans.</li>
+<li><strong>fontsize:</strong> <strong><em>size</em></strong><br />
+Font size in pixels. Default: 32</li>
+<li><strong>fontcolor:</strong> <strong><em>colorspec</em></strong><br />
+Font color. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>. Default: black.</li>
+<li><strong>pos:</strong> (<strong><code>top</code></strong>|<code>center</code>|<code>bottom</code>)<code>-</code>(<strong><code>left</code></strong>|<code>center</code>|<code>right</code>)<br />
+Position of the label relative to the image. A combination of the words (<code>top</code>, <code>center</code>, <code>bottom</code>) and (<code>left</code>, <code>center</code>, <code>right</code>), separated with a dash (no space in between!). Can be overridden with the <strong>labelpos</strong> parameter for any individual image. Default: <code>top-left</code>.</li>
+<li><strong>offset:</strong> <code>[</code><strong><em>xoffset</em></strong><code>, </code><strong><em>yoffset</em></strong><code>]</code><br />
+Offset, in pixels, for the label, relative to the position defined in <strong>pos</strong>. Can be overridden with the <strong>labeloffset</strong> parameter for any individual image. Default: <code>[0, 0]</code></li>
+</ul></li>
+<li><p><strong>globallabels:</strong><br />
+Add arbitrary labels to the final image. Note: they will be added before adding the <strong>globalborder</strong>.</p>
+<ul>
+<li><strong>fontname:</strong> <strong><em>fontname</em></strong><br />
+Name of a truetype font available on the system. Example: <code>Arial_Bold</code>. Optional, can be overridden for each label.</li>
+<li><strong>fontsize:</strong> <strong><em>size</em></strong><br />
+Font size in pixels. Optional, can be overridden for each label.</li>
+<li><strong>fontcolor:</strong> <strong><em>colorspec</em></strong><br />
+Font color. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>. Optional, can be overridden for each label.</li>
+<li><strong>labellist:</strong><br />
+List the labels.
+<ul>
+<li><strong>-</strong><br />
+Specify a label
+<ul>
+<li><strong>text:</strong> <strong><em>labeltext</em></strong><br />
+Text of the label. To specify a multi-line label, put it in double quotes and use <code>\n</code> to indicate line breaks, e.g. <code>"First line\nsecond line"</code>. Use the <strong>align</strong> property to specify the justification of lines.</li>
+<li><strong>coords:</strong> <strong>[ <em>x</em>, <em>y</em> ]</strong><br />
+Coordinates to place the label at.</li>
+<li><strong>fontname:</strong> <strong><em>fontname</em></strong><br />
+Name of a truetype font available on the system. Example: <code>Arial_Bold</code>. Optional.</li>
+<li><strong>fontsize:</strong> <strong><em>size</em></strong><br />
+Font size in pixels. Optional.</li>
+<li><strong>fontcolor:</strong> <strong><em>colorspec</em></strong><br />
+Font color. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>. Optional.</li>
+<li><strong>align:</strong> <code>left</code> | <code>center</code> | <code>right</code><br />
+Justification of lines in multi-line labels.</li>
+</ul></li>
+<li><strong>-</strong><br />
+Another label.
+<ul>
+<li>...<br />
+Arbitrary number of further labels can be specified.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p><strong>title:</strong><br />
+To add a title to the final image. It will always be placed top-center in a separate title bar.</p>
+<ul>
+<li><strong>add:</strong> <strong><code>no</code></strong>|<code>yes</code><br />
+Whether to add a title. Default: no.</li>
+<li><strong>text:</strong> <strong><em>title</em></strong><br />
+Title text, any string.</li>
+<li><strong>fontname:</strong> <strong><em>fontname</em></strong><br />
+Name of a truetype font available on the system. Example: <code>Arial_Bold</code>. Default: FreeSans.</li>
+<li><strong>fontsize:</strong> <strong><em>size</em></strong><br />
+Font size in pixels. Default: 36</li>
+<li><strong>fontcolor:</strong> <strong><em>colorspec</em></strong><br />
+Font color. Default: black. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>.</li>
+<li><strong>bgcolor:</strong> <strong><em>color</em></strong><br />
+Background color for the title bar. Default: white. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>.</li>
+<li><strong>height:</strong> <strong><em>size</em></strong><br />
+Height of the title bar in pixels. The title will be placed in the middle of the title bar. Default: 1.1*fontsize</li>
+</ul></li>
+<li><p><strong>lines:</strong><br />
+Add arbitrary lines or arrows to the final image. Note: they will be added before the <strong>globalborder</strong>.</p>
+<ul>
+<li><strong>width:</strong> <strong><em>width</em></strong><br />
+Line width. Optional, can be ovverridden for each line. Default: 3.</li>
+<li><strong>color:</strong> <strong><em>colorspec</em></strong><br />
+Line color. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>.</li>
+<li><strong>linelist:</strong><br />
+List the lines.
+<ul>
+<li><strong>-</strong>
+<ul>
+<li><strong>fromto:</strong> <strong>[ <em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em> ]</strong><br />
+Coordinates of start and end of line. Mandatory. Further line segments can be specified by continuing the list with <strong><em>x3, y3, x4, y4, ...</em></strong></li>
+<li><strong>arrowsize:</strong> <strong><em>length</em></strong><br />
+Length of the small lines forming the arrowhead. Default: 0. If not provided or zero, no arrow will be drawn. Optional.</li>
+<li><strong>width:</strong> <strong><em>width</em></strong><br />
+Line width. Optional.</li>
+<li><strong>color:</strong> <strong><em>colorspec</em></strong><br />
+Line color. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>.</li>
+</ul></li>
+<li><strong>-</strong><br />
+Any number of further lines can be defined
+<ul>
+<li>...<br />
+Another line specification</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p><strong>globalborder:</strong><br />
+Draw a border around the final image. It will be added after adding the <strong>title</strong>.</p>
+<ul>
+<li><strong>size:</strong> <strong><em>width</em> | [ <em>xwidth</em>, <em>ywidth</em> ] | [ <em>leftwidth</em>, <em>topwidth</em>, <em>rightwidth</em>, <em>bottomwidth</em> ]</strong><br />
+Border size. A single number, or a list of 2 or 4 numbers. A single number specifies the width of a uniform border. Two numbers refer to the left/right and top/bottom widths of the border. If four numbers are given, the widths of the border on all four sides can be specified separately.</li>
+<li><strong>color:</strong> <strong><em>colorspec</em></strong><br />
+Color of the border. A color name like <code>red</code>, an RGB color specified as <code>#rrggbb</code> or <code>rgb(red, green, blue)</code> with values between 0 and 255 or percentages, or a HSL color as <code>hsl(hue, saturation%, lightness%)</code>.</li>
+</ul></li>
+</ul>
+<h1 id="dependencies">DEPENDENCIES</h1>
+<p><strong>imagelayout.py</strong> is a Python 3.x app and requires the following modules to be installed:</p>
+<ul>
+<li><a href="https://pypi.org/project/PyYAML/">PyYAML</a></li>
+<li><a href="https://pypi.org/project/Pillow/">Pillow</a></li>
+</ul>
+<h1 id="availability">AVAILABILITY</h1>
+<p>The original <strong>imagelayout.py</strong> is hosted at <a href="https://github.com/aszilagyi/imagelayout.py">github</a>, and licensed as GPL-3.0.</p>
+</body>
+</html>
