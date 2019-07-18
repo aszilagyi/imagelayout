@@ -30,6 +30,10 @@ workflows.
   also watches the image file and reloads it when it changes. `feh` for Linux 
   systems is such a viewer, e.g. `feh -r 0.5 out.png` will reload `out.png` 
   every 0.5 seconds.
+* **-s**\
+  Report the pixel sizes of input images and exit.
+* **-h, --help**\
+  Display short help message and exit.
   
 # DEFINING THE IMAGE LAYOUT
 
