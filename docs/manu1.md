@@ -16,7 +16,8 @@ border and a title to the final image, and to add arbitrary labels and
 lines or arrows to the final image. The intended use of
 **imagelayout.py** is the creation of figures from sub-figures for
 articles and science publications. **imagelayout.py** is a
-command-line Python application guided by a configuration file; it has
+command-line Python application guided by a configuration file _configfile_
+(provided as the only command line argument); it has
 no graphical interface or interactive features. Thus, it is suitable
 for use in scripts, Makefiles, and automated and reproducible
 workflows.
