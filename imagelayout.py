@@ -47,7 +47,7 @@ def getconf(configfile):
     f.close()
     return conf
 
-def imagelayout(conf):
+def imagelayout(conf, reportsizes=False):
     '''generate layout from given configuration'''
     # initialize variables
     
@@ -65,7 +65,7 @@ def imagelayout(conf):
         imgdata[imgid]['parts'] = [imgid]
         imgdata[imgid]['img'] = im
     
-    if a.s:
+    if reportsizes: # -s option is given, report sizes and exit
         for imgid in imgdata:
             w, h = imgdata[imgid]['size'][2:]
             print('%s %s: %dx%d aspect=%f' % (imgid, imgdata[imgid]['file'], w, h, w/h))
@@ -407,7 +407,7 @@ def imagelayout(conf):
 
 ## Main program
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(description='Arrange images into a layout',
       epilog='See man page at https://github.com/aszilagyi/imagelayout/docs/manu.md')
     parser.add_argument('-w', '--watch', action='store_true',
@@ -416,7 +416,7 @@ if __name__ == '__main__':
     parser.add_argument('configfile', help='config file')
     a = parser.parse_args()
     
-    imagelayout(getconf(a.configfile))
+    imagelayout(getconf(a.configfile), reportsizes=a.s)
     
     if a.watch:
         print('Watching config file (%s) for changes, press Ctrl-C to quit...' % (a.configfile))
@@ -431,3 +431,7 @@ if __name__ == '__main__':
                 except ValueError as e:
                     print('ValueError:', e)
                 mtime = mt
+
+if __name__ == '__main__':
+    main()
+    
