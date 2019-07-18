@@ -4,7 +4,7 @@
 
 # SYNOPSYS
 
-**imagelayout.py** [**-w**|**--watch**] _configfile_
+**imagelayout.py** [**-w**|**--watch**] [**-s**] [**-h|--help**] _configfile_
 
 # DESCRIPTION
 
