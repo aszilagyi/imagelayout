@@ -31,9 +31,9 @@ workflows.
   Run once, then watch the configuration file for changes and re-run whenever a   
   change is detected. This is useful for developing the configuration file and 
   making adjustments. **Tip:** View the output image file with a viewer that 
-  also watches the image file and reloads it when it changes. `feh` for Linux 
-  systems is such a viewer, e.g. `feh -r 0.5 out.png` will reload `out.png` 
-  every 0.5 seconds.
+  also watches the image file and reloads it when it changes. `qiv` for Linux 
+  systems is such a viewer, e.g. `qiv -T out.png` will reload `out.png` 
+  as soon as it changes.
 * **-s**\
   Report the pixel sizes of input images and exit.
 * **-h, --help**\
