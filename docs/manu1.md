@@ -1,21 +1,24 @@
 # NAME
 
-**imagelayout.py** - arrange images into a large image according to a layout
+**imagelayout** - arrange images into a large image according to a layout
 
 # SYNOPSYS
 
-**imagelayout.py** [**-w**|**--watch**] [**-s**] [**-h|--help**] _configfile_
+**imagelayout(.py)** [**-w**|**--watch**] [**-s**] [**-h|--help**] _configfile_
+
+NOTE: Depending on how you installed the program, the command is either 
+**imagelayout.py** or just **imagelayout**.
 
 # DESCRIPTION
 
-**imagelayout.py** arranges several images according to a predefined
+**imagelayout** arranges several images according to a predefined
 layout and produces a larger image consisting of the sub-images. It
 can optionally label the individual images. Additional features
 include the ability to crop and add borders to the images, to add a
 border and a title to the final image, and to add arbitrary labels and
 lines or arrows to the final image. The intended use of
-**imagelayout.py** is the creation of figures from sub-figures for
-articles and science publications. **imagelayout.py** is a
+**imagelayout** is the creation of figures from sub-figures for
+articles and science publications. **imagelayout** is a
 command-line Python application guided by a configuration file _configfile_
 (provided as the only command line argument); it has
 no graphical interface or interactive features. Thus, it is suitable
@@ -95,7 +98,7 @@ is used for an image, it will be padded rather than scaled.
 
 # CONFIGURATION FILE
 
-The only command line argument to **imagelayout.py** is the configuration
+The only command line argument to **imagelayout** is the configuration
 file _configfile_, which should be written as a YAML format file, and
 contains all information about the input/output files, the layout, and
 the requested operations.

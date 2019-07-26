@@ -1,21 +1,21 @@
 # imagelayout
 
-**imagelayout.py** arranges several images according to a predefined
+`imagelayout` arranges several images according to a predefined
 layout and produces a larger image consisting of the sub-images. It
 can optionally label the individual images. Additional features
 include the ability to crop and add borders to the images, to add a
 border and a title to the final image, and to add arbitrary labels and
 lines or arrows to the final image.
 
-**imagelayout.py** can use any image format known to the Python PIL
+`imagelayout` can use any image format known to the Python PIL
 module. This includes JPG, GIF, PNG, TIF, BMP, and lots of other
 formats.
 
 ## PURPOSE
 
-The intended use of **imagelayout.py** is the automated creation of
+The intended use of `imagelayout` is the automated creation of
 figures from sub-figures for articles and science publications.
-**imagelayout.py** is a command-line Python application guided by a
+`imagelayout` is a command-line Python application guided by a
 configuration file; it has no graphical interface or interactive
 features. Thus, it is suitable for use in scripts, Makefiles, and
 automated and reproducible workflows. Instead of manually creating the
@@ -28,20 +28,29 @@ again.
 
 ## REQUIREMENTS
 
-**imagelayout.py** runs under Python 3.x, and needs
+`imagelayout` runs under Python 3.x, and needs
 [PyYAML](https://pypi.org/project/PyYAML/) and
 [Pillow](https://pypi.org/project/Pillow/) to be installed.
 
 ## INSTALLATION
 
-Put `imagelayout.py` somewhere in your path and make it executable.
+The program is a single `.py` file. Put [`imagelayout.py`](imagelayout.py) 
+somewhere in your path and make it executable (`chmod +x imagelayout.py`).
+
 If on Linux/Unix, put the man page
-[`imagelayout.py.1`](docs/imagelayout.py.1) in your MANPATH, e.g.
+[`imagelayout.1`](docs/imagelayout.1) in your MANPATH, e.g.
 `/usr/local/man/man1`.
+
+**NOTE:** On Unix/Linux, you can rename the `imagelayout.py` file to
+just `imagelayout`. On Windows, the `.py` extension may be required
+for Windows to recognize the file as a Python program, and associate
+it with the Python interpreter.
 
 ## DOCUMENTATION
 
-See the [man page](docs/manu.md) for detailed instructions.
+See the [man page](docs/manu.md) for detailed instructions. The man
+page is also available in [man page format](docs/imagelayout.1) and in
+[html format](docs/imagelayout.html).
 
 ## DEVELOPING THE CONFIGURATION FILE
 
@@ -56,16 +65,16 @@ demonstrates the available options, and can be used as a start to develop
 your own configuration file.
 
 To facilitate the writing of the configuration file,
-**imagelayout.py** also has a "watch" mode (`-w` option) which
+`imagelayout` also has a "watch" mode (`-w` option) which
 monitors the configuration file and immediately regenerates the output
 image when it detects a change in the configuration file (i.e. you
 save it from an editor). Combined with an image viewer that also
 monitors the output image for changes and immediately displays the
-changed file, **imagelayout.py** can be used semi-interactively.
+changed file, `imagelayout` can be used semi-interactively.
 
 ## DEFINING THE LAYOUT
 
-**imagelayout.py** constructs the output image by joining some input
+`imagelayout` constructs the output image by joining some input
 images horizontally or vertically (`hjoin` and `vjoin` keywords), and
 then again combining the resulting images horizontally or vertically,
 etc. Thus, the layout is specified as an arbitrarily nested list of
@@ -84,7 +93,7 @@ page](docs/manu.md).
 
 ## EXAMPLE
 
-A simple example of how **imagelayout.py** works can be found in the
+A simple example of how `imagelayout` works can be found in the
 [demo](demo) directory. Here, 6 input images are combined and labeled
 from A to F, and a title is added. The layout is defined as
 
@@ -131,7 +140,7 @@ layout:
 
 ## SINGLE-IMAGE USE
 
-Although the main purpose of **imagelayout.py** is to combine multiple
+Although the main purpose of `imagelayout` is to combine multiple
 images, it can also be used as a quick way to resize, crop/autocrop,
 add borders, labels, lines or arrows to single images. If only a
 single input image is specified, the layout does not have to be

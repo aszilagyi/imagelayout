@@ -4,25 +4,27 @@
 .hy
 .SH NAME
 .PP
-\f[B]imagelayout.py\f[R] - arrange images into a large image according
-to a layout
+\f[B]imagelayout\f[R] - arrange images into a large image according to a
+layout
 .SH SYNOPSYS
 .PP
-\f[B]imagelayout.py\f[R] [\f[B]-w\f[R]|\f[B]--watch\f[R]] [\f[B]-s\f[R]]
-[\f[B]-h|--help\f[R]] \f[I]configfile\f[R]
+\f[B]imagelayout(.py)\f[R] [\f[B]-w\f[R]|\f[B]--watch\f[R]]
+[\f[B]-s\f[R]] [\f[B]-h|--help\f[R]] \f[I]configfile\f[R]
+.PP
+NOTE: Depending on how you installed the program, the command is either
+\f[B]imagelayout.py\f[R] or just \f[B]imagelayout\f[R].
 .SH DESCRIPTION
 .PP
-\f[B]imagelayout.py\f[R] arranges several images according to a
-predefined layout and produces a larger image consisting of the
-sub-images.
+\f[B]imagelayout\f[R] arranges several images according to a predefined
+layout and produces a larger image consisting of the sub-images.
 It can optionally label the individual images.
 Additional features include the ability to crop and add borders to the
 images, to add a border and a title to the final image, and to add
 arbitrary labels and lines or arrows to the final image.
-The intended use of \f[B]imagelayout.py\f[R] is the creation of figures
+The intended use of \f[B]imagelayout\f[R] is the creation of figures
 from sub-figures for articles and science publications.
-\f[B]imagelayout.py\f[R] is a command-line Python application guided by
-a configuration file \f[I]configfile\f[R] (provided as the only command
+\f[B]imagelayout\f[R] is a command-line Python application guided by a
+configuration file \f[I]configfile\f[R] (provided as the only command
 line argument); it has no graphical interface or interactive features.
 Thus, it is suitable for use in scripts, Makefiles, and automated and
 reproducible workflows.
@@ -138,7 +140,7 @@ If the \f[B]fixedsize\f[R] option is used for an image, it will be
 padded rather than scaled.
 .SH CONFIGURATION FILE
 .PP
-The only command line argument to \f[B]imagelayout.py\f[R] is the
+The only command line argument to \f[B]imagelayout\f[R] is the
 configuration file \f[I]configfile\f[R], which should be written as a
 YAML format file, and contains all information about the input/output
 files, the layout, and the requested operations.

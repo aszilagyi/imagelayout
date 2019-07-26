@@ -23,11 +23,12 @@
 <p class="date">July 2019</p>
 </header>
 <h1 id="name">NAME</h1>
-<p><strong>imagelayout.py</strong> - arrange images into a large image according to a layout</p>
+<p><strong>imagelayout</strong> - arrange images into a large image according to a layout</p>
 <h1 id="synopsys">SYNOPSYS</h1>
-<p><strong>imagelayout.py</strong> [<strong>-w</strong>|<strong>--watch</strong>] [<strong>-s</strong>] [<strong>-h|--help</strong>] <em>configfile</em></p>
+<p><strong>imagelayout(.py)</strong> [<strong>-w</strong>|<strong>--watch</strong>] [<strong>-s</strong>] [<strong>-h|--help</strong>] <em>configfile</em></p>
+<p>NOTE: Depending on how you installed the program, the command is either <strong>imagelayout.py</strong> or just <strong>imagelayout</strong>.</p>
 <h1 id="description">DESCRIPTION</h1>
-<p><strong>imagelayout.py</strong> arranges several images according to a predefined layout and produces a larger image consisting of the sub-images. It can optionally label the individual images. Additional features include the ability to crop and add borders to the images, to add a border and a title to the final image, and to add arbitrary labels and lines or arrows to the final image. The intended use of <strong>imagelayout.py</strong> is the creation of figures from sub-figures for articles and science publications. <strong>imagelayout.py</strong> is a command-line Python application guided by a configuration file <em>configfile</em> (provided as the only command line argument); it has no graphical interface or interactive features. Thus, it is suitable for use in scripts, Makefiles, and automated and reproducible workflows.</p>
+<p><strong>imagelayout</strong> arranges several images according to a predefined layout and produces a larger image consisting of the sub-images. It can optionally label the individual images. Additional features include the ability to crop and add borders to the images, to add a border and a title to the final image, and to add arbitrary labels and lines or arrows to the final image. The intended use of <strong>imagelayout</strong> is the creation of figures from sub-figures for articles and science publications. <strong>imagelayout</strong> is a command-line Python application guided by a configuration file <em>configfile</em> (provided as the only command line argument); it has no graphical interface or interactive features. Thus, it is suitable for use in scripts, Makefiles, and automated and reproducible workflows.</p>
 <h1 id="options">OPTIONS</h1>
 <ul>
 <li><strong>-w, --watch</strong><br />
@@ -77,7 +78,7 @@ Display short help message and exit.</li>
 </code></pre>
 <p>Horizontally joined images will be resized to fit the same height (the highest image), and vertically joined images will be resized to fit the same width (the widest image). If the <strong>fixedsize</strong> option is used for an image, it will be padded rather than scaled.</p>
 <h1 id="configuration-file">CONFIGURATION FILE</h1>
-<p>The only command line argument to <strong>imagelayout.py</strong> is the configuration file <em>configfile</em>, which should be written as a YAML format file, and contains all information about the input/output files, the layout, and the requested operations.</p>
+<p>The only command line argument to <strong>imagelayout</strong> is the configuration file <em>configfile</em>, which should be written as a YAML format file, and contains all information about the input/output files, the layout, and the requested operations.</p>
 <p>The two main mandatory parts of the configuration file are the <strong>images</strong> section and the <strong>layout</strong> section; in addition the output file must also be specified using the <strong>outputfile</strong> keyword. The simplest configuration file may look something like this:</p>
 <pre><code>images:
   A: imageA.png
