@@ -134,5 +134,13 @@ cropping images or adding borders to them, adding a title, adding
 arbitrary labels, lines, and arrows to the final image. The detailed
 list of keywords and options follows.
 
+**Note on font names:** On Linux, the system fonts may be listed using the
+`fc-list` command. On Windows, look in the `\Windows\Fonts` directory. Use
+the font file names without the extension (e.g. `.ttf`) as font names.
+For example, bold Arial is specified in Linux as `Arial_Bold`
+(assuming the `msttcorefonts` package is installed), but on
+Windows as `arialbd` (as the `\Windows\Fonts` directory contains the
+`arialbd.ttf` file).
+
 # COMPLETE LIST OF CONFIGURATION FILE OPTIONS
 

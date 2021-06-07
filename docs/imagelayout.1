@@ -181,6 +181,16 @@ to specify image labels, font names, font sizes and colors, cropping
 images or adding borders to them, adding a title, adding arbitrary
 labels, lines, and arrows to the final image.
 The detailed list of keywords and options follows.
+.PP
+\f[B]Note on font names:\f[R] On Linux, the system fonts may be listed
+using the \f[C]fc-list\f[R] command.
+On Windows, look in the \f[C]\[rs]Windows\[rs]Fonts\f[R] directory.
+Use the font file names without the extension (e.g.
+\f[C].ttf\f[R]) as font names.
+For example, bold Arial is specified in Linux as \f[C]Arial_Bold\f[R]
+(assuming the \f[C]msttcorefonts\f[R] package is installed), but on
+Windows as \f[C]arialbd\f[R] (as the \f[C]\[rs]Windows\[rs]Fonts\f[R]
+directory contains the \f[C]arialbd.ttf\f[R] file).
 .SH COMPLETE LIST OF CONFIGURATION FILE OPTIONS
 .SS imagelayout yaml configuration file
 .IP \[bu] 2

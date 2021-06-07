@@ -93,6 +93,7 @@ layout:
 </code></pre>
 <p>lines are added then each image will be labeled in the top left corner with the letters A and B, respectively.</p>
 <p>The configuration file may contain numerous other keywords and options to specify image labels, font names, font sizes and colors, cropping images or adding borders to them, adding a title, adding arbitrary labels, lines, and arrows to the final image. The detailed list of keywords and options follows.</p>
+<p><strong>Note on font names:</strong> On Linux, the system fonts may be listed using the <code>fc-list</code> command. On Windows, look in the <code>\Windows\Fonts</code> directory. Use the font file names without the extension (e.g. <code>.ttf</code>) as font names. For example, bold Arial is specified in Linux as <code>Arial_Bold</code> (assuming the <code>msttcorefonts</code> package is installed), but on Windows as <code>arialbd</code> (as the <code>\Windows\Fonts</code> directory contains the <code>arialbd.ttf</code> file).</p>
 <h1 id="complete-list-of-configuration-file-options">COMPLETE LIST OF CONFIGURATION FILE OPTIONS</h1>
 <h2 id="imagelayout-yaml-configuration-file">imagelayout yaml configuration file</h2>
 <ul>
