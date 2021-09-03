@@ -25,7 +25,7 @@
 <h1 id="name">NAME</h1>
 <p><strong>imagelayout</strong> - arrange images into a large image according to a layout</p>
 <h1 id="synopsys">SYNOPSYS</h1>
-<p><strong>imagelayout(.py)</strong> [<strong>-w</strong>|<strong>--watch</strong>] [<strong>-s</strong>] [<strong>-h|--help</strong>] <em>configfile</em></p>
+<p><strong>imagelayout(.py)</strong> [<strong>-w</strong>|<strong>--watch</strong>] [<strong>-s</strong>] [<strong>-o</strong> <em>outputfile</em>] [<strong>-h|--help</strong>] <em>configfile</em> [<em>imagefile</em> [<em>imagefile</em> ...]]</p>
 <p>NOTE: Depending on how you installed the program, the command is either <strong>imagelayout.py</strong> or just <strong>imagelayout</strong>.</p>
 <h1 id="description">DESCRIPTION</h1>
 <p><strong>imagelayout</strong> arranges several images according to a predefined layout and produces a larger image consisting of the sub-images. It can optionally label the individual images. Additional features include the ability to crop and add borders to the images, to add a border and a title to the final image, and to add arbitrary labels and lines or arrows to the final image. The intended use of <strong>imagelayout</strong> is the creation of figures from sub-figures for articles and science publications. <strong>imagelayout</strong> is a command-line Python application guided by a configuration file <em>configfile</em> (provided as the only command line argument); it has no graphical interface or interactive features. Thus, it is suitable for use in scripts, Makefiles, and automated and reproducible workflows.</p>
@@ -36,8 +36,14 @@ Run once, then watch the configuration file for changes and re-run whenever a<br
 change is detected. This is useful for developing the configuration file and making adjustments. <strong>Tip:</strong> View the output image file with a viewer that also watches the image file and reloads it when it changes. <code>qiv</code> for Linux systems is such a viewer, e.g. <code>qiv -T out.png</code> will reload <code>out.png</code> as soon as it changes.</li>
 <li><strong>-s</strong><br />
 Report the pixel sizes of input images and exit.</li>
+<li><strong>-o</strong> <em>outputfile</em><br />
+Name of the output image file (optional)</li>
 <li><strong>-h, --help</strong><br />
 Display short help message and exit.</li>
+<li><em>configfile</em><br />
+The configuration file (yaml format)</li>
+<li><em>imagefile(s)</em><br />
+Optionally, the image files to be used as inputs can be specified here.</li>
 </ul>
 <h1 id="defining-the-image-layout">DEFINING THE IMAGE LAYOUT</h1>
 <p>The desired layout of the images can be defined as a combination of horizontally and vertically joined images. Two keywords are used for this in the configuration file. The <code>hjoin</code> keyword defines a horizontally joined image sequence, e.g.</p>
@@ -77,8 +83,25 @@ Display short help message and exit.</li>
 +-------+---+
 </code></pre>
 <p>Horizontally joined images will be resized to fit the same height (the highest image), and vertically joined images will be resized to fit the same width (the widest image). If the <strong>fixedsize</strong> option is used for an image, it will be padded rather than scaled.</p>
+<h1 id="input-and-output-file-names">INPUT AND OUTPUT FILE NAMES</h1>
+<p>The names of the input and output image file names can be specified in the configuration file. However, to facilitate the use of <code>imagelayout.py</code> in scripts and Makefiles, the file names can also be provided on the command line.</p>
+<p>Input file names can be provided on the command line after the configuration file name. In this case, you can refer to them in the configuration file as <code>$1</code>, <code>$2</code>, etc. For example, if the command line is</p>
+<pre><code>imagelayout.py config.yaml image1.png image2.jpg image3.png
+</code></pre>
+<p>then you can refer to the three input image files in the configuration file as follows:</p>
+<pre><code>images:
+  A: $1
+  B: $2
+  C: $3
+</code></pre>
+<p>To specify the output file name on the command line, the <code>-o</code> option can be used. In this case, you can refer to it in the configuration file as any string starting with a <code>$</code> (a single <code>$</code> is enough). For example, if the command line is</p>
+<pre><code>imagelayout.py -o output.png config.yaml
+</code></pre>
+<p>then you refer to the output file in the configuration file as follows:</p>
+<pre><code>outputfile: $
+</code></pre>
 <h1 id="configuration-file">CONFIGURATION FILE</h1>
-<p>The only command line argument to <strong>imagelayout</strong> is the configuration file <em>configfile</em>, which should be written as a YAML format file, and contains all information about the input/output files, the layout, and the requested operations.</p>
+<p>The only mandatory command line argument to <strong>imagelayout</strong> is the configuration file <em>configfile</em>, which should be written as a YAML format file, and contains all information about the input/output files, the layout, and the requested operations.</p>
 <p>The two main mandatory parts of the configuration file are the <strong>images</strong> section and the <strong>layout</strong> section; in addition the output file must also be specified using the <strong>outputfile</strong> keyword. The simplest configuration file may look something like this:</p>
 <pre><code>images:
   A: imageA.png
@@ -100,7 +123,7 @@ layout:
 <li><p><strong>inputdir:</strong> <em><strong>directoryname</strong></em><br />
 Input directory; input image files will be loaded from here</p></li>
 <li><p><strong>images:</strong><br />
-Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters.</p>
+Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters. Note: A file name like <code>$1</code>, <code>$2</code>, etc. indicates that the file name should be taken from the command line (see manual).</p>
 <ul>
 <li><strong><em>imageid</em>:</strong> <strong><em>filename</em></strong><br />
 An identifier and a filename. If you don't want to specify any further parameters for the image other than the filename then this form can be used. Otherwise, see below.</li>
@@ -151,9 +174,9 @@ The layout of the output image is specified here. It can be omitted if there is 
 <li><p><strong>vjoin | hjoin:</strong><br />
 Join the following images vertically (<strong>vjoin</strong>) or horizontally (<strong>hjoin</strong>). Must be followed by a list of the images to join. List elements can be further <strong>hjoin</strong>/<strong>vjoin</strong> lists and individual images. The list can be specified either on the same line in bracket notation (e.g. <code>vjoin: [A, B, C]</code>) or on separate lines using the dash notation, e.g.</p>
 <pre><code>vjoin:
-  - A
-  - B
-  - C
+            - A
+            - B
+            - C
 </code></pre>
 <ul>
 <li><p><strong>- vjoin: | hjoin: | <em>imageid</em></strong><br />
@@ -161,15 +184,15 @@ List element: another list of images to join vertically or horizontally, or an i
 <li><p>... <br />
 Images and <strong>vjoin</strong>/<strong>hjoin</strong> lists can be arbitrarily combined and nested. Example:</p>
 <pre><code>vjoin:
-  - hjoin: [A, B, C]
-  - hjoin:
-    - D
-    - vjoin: [E, F]
+                - hjoin: [A, B, C]
+                - hjoin:
+                  - D
+                  - vjoin: [E, F]
 </code></pre></li>
 </ul></li>
 </ul></li>
 <li><p><strong>outputfile:</strong> <strong><em>filename</em></strong><br />
-Name of the output file relative to the current directory. The extension will determine the image file type. See <a href="https://pillow.readthedocs.io/en/3.1.x/handbook/image-file-formats.html">Pillow documentation</a> for the available file formats.</p></li>
+Name of the output file relative to the current directory. The extension will determine the image file type. See <a href="https://pillow.readthedocs.io/en/3.1.x/handbook/image-file-formats.html">Pillow documentation</a> for the available file formats. Note: If the file name starts with a <code>$</code> (it can be a single <code>$</code> character) then it is taken from the command line <code>-o</code> option.</p></li>
 <li><p><strong>finalwidth:</strong> <strong><em>size</em></strong><br />
 The final width of the output image after joining the individual images. The image will be resized to fit this value, retaining the aspect ratio unless <strong>finalheight</strong> is also provided. Note that this is before the <strong>title</strong> and the <strong>globalborder</strong> are added. Optional. If not given, and <strong>finalheight</strong> is also omitted, the image will not be resized.</p></li>
 <li><p><strong>finalheight:</strong> <strong><em>size</em></strong><br />

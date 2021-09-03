@@ -47,7 +47,7 @@ def getconf(configfile):
     f.close()
     return conf
 
-def imagelayout(conf, reportsizes=False):
+def imagelayout(conf, reportsizes=False, imagefiles=[], outputfile=''):
     '''generate layout from given configuration'''
     # initialize variables
     
@@ -60,6 +60,8 @@ def imagelayout(conf, reportsizes=False):
     for imgid in imgdata:
         if type(imgdata[imgid]) == str: # only filename is given
             imgdata[imgid] = {'file':imgdata[imgid]}
+        if imgdata[imgid]['file'][0] == '$': # file name is taken from command line argument
+            imgdata[imgid]['file'] = imagefiles[int(imgdata[imgid]['file'][1:])-1]
         im = Image.open(os.path.join(wd, imgdata[imgid]['file']))
         imgdata[imgid]['size'] = (0, 0, *im.size)
         imgdata[imgid]['parts'] = [imgid]
@@ -241,7 +243,7 @@ def imagelayout(conf, reportsizes=False):
         if 'finalwidth' in conf:
             facw = conf['finalwidth']/totw
             if 'finalheight' in conf:
-                fach = conf['finalheight']
+                fach = conf['finalheight']/toth
             else:
                 fach = facw
         else:
@@ -387,6 +389,8 @@ def imagelayout(conf, reportsizes=False):
           color=conf['globalborder'].get('color', 'white'))
     
     # save result
+    if conf['outputfile'][0] == '$':
+        conf['outputfile'] = outputfile # from command line argument
     ofile = conf['outputfile'].lower()
     background = Image.new('RGBA', imnew.size, color=conf.get('paddingcolor', 'white'))
     imnew = Image.alpha_composite(background, imnew)
@@ -413,10 +417,13 @@ def main():
     parser.add_argument('-w', '--watch', action='store_true',
       help='Watch the config file and re-run upon detecting a change')
     parser.add_argument('-s', action='store_true', help='report image sizes and exit')
+    parser.add_argument('-o', dest='outputfile', help='Output image file name (optional)')
     parser.add_argument('configfile', help='config file')
+    parser.add_argument('imagefile', nargs='*', help='image files (optional)')
     a = parser.parse_args()
-    
-    imagelayout(getconf(a.configfile), reportsizes=a.s)
+
+    imagelayout(getconf(a.configfile), reportsizes=a.s, imagefiles=a.imagefile, 
+      outputfile=a.outputfile)
     
     if a.watch:
         print('Watching config file (%s) for changes, press Ctrl-C to quit...' % (a.configfile))
@@ -427,7 +434,8 @@ def main():
             if mt != mtime:
                 print('Re-running...')
                 try:
-                    imagelayout(getconf(a.configfile))
+                    imagelayout(getconf(a.configfile), reportsizes=a.s, imagefiles=a.imagefile,
+                      outputfile=a.outputfile)
                 except ValueError as e:
                     print('ValueError:', e)
                 mtime = mt

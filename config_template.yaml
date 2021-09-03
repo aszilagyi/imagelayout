@@ -6,7 +6,7 @@
 inputdir: . # input images are here (optional)
 images: # input images are specified here
   A: filename1.png # use this form if you don't specify anything else for this image
-  B: filename2.jpg
+  B: filename2.jpg # you can use $1, $2, etc. to use command line arguments (after the config file)
   C: # we specify other options for this file
     file: filename3.gif
     label: K # use this for label with default properties

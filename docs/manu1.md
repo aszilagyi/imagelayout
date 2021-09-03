@@ -4,7 +4,7 @@
 
 # SYNOPSYS
 
-**imagelayout(.py)** [**-w**|**--watch**] [**-s**] [**-h|--help**] _configfile_
+**imagelayout(.py)** [**-w**|**--watch**] [**-s**] [**-o** _outputfile_] [**-h|--help**] _configfile_ [_imagefile_ [_imagefile_ ...]]
 
 NOTE: Depending on how you installed the program, the command is either 
 **imagelayout.py** or just **imagelayout**.
@@ -36,9 +36,15 @@ workflows.
   as soon as it changes.
 * **-s**\
   Report the pixel sizes of input images and exit.
+* **-o** _outputfile_\
+  Name of the output image file (optional)
 * **-h, --help**\
   Display short help message and exit.
-  
+* _configfile_\
+  The configuration file (yaml format)
+* _imagefile(s)_\
+  Optionally, the image files to be used as inputs can be specified here.
+
 # DEFINING THE IMAGE LAYOUT
 
 The desired layout of the images can be defined as a combination of
@@ -96,12 +102,52 @@ highest image), and vertically joined images will be
 resized to fit the same width (the widest image). If the **fixedsize** option
 is used for an image, it will be padded rather than scaled.
 
+# INPUT AND OUTPUT FILE NAMES
+
+The names of the input and output image file names can be specified in the configuration
+file. However, to facilitate the use of `imagelayout.py` in scripts
+and Makefiles, the file names can also be provided on the command line.
+
+Input file names can be provided on the command line after the
+configuration file name. In this case, you can refer to them in the
+configuration file as `$1`, `$2`, etc. For example, if the command
+line is
+
+~~~
+imagelayout.py config.yaml image1.png image2.jpg image3.png
+~~~
+
+then you can refer to the three input image files in the configuration
+file as follows:
+
+~~~
+images:
+  A: $1
+  B: $2
+  C: $3
+~~~
+
+To specify the output file name on the command line, the `-o` option
+can be used. In this case, you can refer to it in the configuration
+file as any string starting with a `$` (a single `$` is enough). For
+example, if the command line is
+
+~~~
+imagelayout.py -o output.png config.yaml
+~~~
+
+then you refer to the output file in the configuration file as follows:
+
+~~~
+outputfile: $
+~~~
+
 # CONFIGURATION FILE
 
-The only command line argument to **imagelayout** is the configuration
-file _configfile_, which should be written as a YAML format file, and
-contains all information about the input/output files, the layout, and
-the requested operations.
+The only mandatory command line argument to **imagelayout** is the
+configuration file _configfile_, which should be written as a YAML
+format file, and contains all information about the input/output
+files, the layout, and the requested operations.
 
 The two main mandatory parts of the configuration file are the
 **images** section and the **layout** section; in addition the output

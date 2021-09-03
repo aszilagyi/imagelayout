@@ -9,7 +9,8 @@ layout
 .SH SYNOPSYS
 .PP
 \f[B]imagelayout(.py)\f[R] [\f[B]-w\f[R]|\f[B]--watch\f[R]]
-[\f[B]-s\f[R]] [\f[B]-h|--help\f[R]] \f[I]configfile\f[R]
+[\f[B]-s\f[R]] [\f[B]-o\f[R] \f[I]outputfile\f[R]] [\f[B]-h|--help\f[R]]
+\f[I]configfile\f[R] [\f[I]imagefile\f[R] [\f[I]imagefile\f[R] ...]]
 .PP
 NOTE: Depending on how you installed the program, the command is either
 \f[B]imagelayout.py\f[R] or just \f[B]imagelayout\f[R].
@@ -54,11 +55,29 @@ changes.
 .PD
 Report the pixel sizes of input images and exit.
 .IP \[bu] 2
+\f[B]-o\f[R] \f[I]outputfile\f[R]
+.PD 0
+.P
+.PD
+Name of the output image file (optional)
+.IP \[bu] 2
 \f[B]-h, --help\f[R]
 .PD 0
 .P
 .PD
 Display short help message and exit.
+.IP \[bu] 2
+\f[I]configfile\f[R]
+.PD 0
+.P
+.PD
+The configuration file (yaml format)
+.IP \[bu] 2
+\f[I]imagefile(s)\f[R]
+.PD 0
+.P
+.PD
+Optionally, the image files to be used as inputs can be specified here.
 .SH DEFINING THE IMAGE LAYOUT
 .PP
 The desired layout of the images can be defined as a combination of
@@ -138,9 +157,59 @@ highest image), and vertically joined images will be resized to fit the
 same width (the widest image).
 If the \f[B]fixedsize\f[R] option is used for an image, it will be
 padded rather than scaled.
+.SH INPUT AND OUTPUT FILE NAMES
+.PP
+The names of the input and output image file names can be specified in
+the configuration file.
+However, to facilitate the use of \f[C]imagelayout.py\f[R] in scripts
+and Makefiles, the file names can also be provided on the command line.
+.PP
+Input file names can be provided on the command line after the
+configuration file name.
+In this case, you can refer to them in the configuration file as
+\f[C]$1\f[R], \f[C]$2\f[R], etc.
+For example, if the command line is
+.IP
+.nf
+\f[C]
+imagelayout.py config.yaml image1.png image2.jpg image3.png
+\f[R]
+.fi
+.PP
+then you can refer to the three input image files in the configuration
+file as follows:
+.IP
+.nf
+\f[C]
+images:
+  A: $1
+  B: $2
+  C: $3
+\f[R]
+.fi
+.PP
+To specify the output file name on the command line, the \f[C]-o\f[R]
+option can be used.
+In this case, you can refer to it in the configuration file as any
+string starting with a \f[C]$\f[R] (a single \f[C]$\f[R] is enough).
+For example, if the command line is
+.IP
+.nf
+\f[C]
+imagelayout.py -o output.png config.yaml
+\f[R]
+.fi
+.PP
+then you refer to the output file in the configuration file as follows:
+.IP
+.nf
+\f[C]
+outputfile: $
+\f[R]
+.fi
 .SH CONFIGURATION FILE
 .PP
-The only command line argument to \f[B]imagelayout\f[R] is the
+The only mandatory command line argument to \f[B]imagelayout\f[R] is the
 configuration file \f[I]configfile\f[R], which should be written as a
 YAML format file, and contains all information about the input/output
 files, the layout, and the requested operations.
@@ -207,6 +276,9 @@ Input directory; input image files will be loaded from here
 Input images are specified here.
 Each file must have an identifier, and either a single file name or a
 number of parameters.
+Note: A file name like \f[C]$1\f[R], \f[C]$2\f[R], etc.
+indicates that the file name should be taken from the command line (see
+manual).
 .RS 2
 .IP \[bu] 2
 \f[B]\f[BI]imageid\f[B]:\f[R] \f[B]\f[BI]filename\f[B]\f[R]
@@ -404,9 +476,9 @@ notation, e.g.
 .nf
 \f[C]
 vjoin:
-  - A
-  - B
-  - C
+            - A
+            - B
+            - C
 \f[R]
 .fi
 .IP \[bu] 2
@@ -429,10 +501,10 @@ Example:
 .nf
 \f[C]
 vjoin:
-  - hjoin: [A, B, C]
-  - hjoin:
-    - D
-    - vjoin: [E, F]
+                - hjoin: [A, B, C]
+                - hjoin:
+                  - D
+                  - vjoin: [E, F]
 \f[R]
 .fi
 .RE
@@ -448,6 +520,9 @@ The extension will determine the image file type.
 See Pillow
 documentation (https://pillow.readthedocs.io/en/3.1.x/handbook/image-file-formats.html)
 for the available file formats.
+Note: If the file name starts with a \f[C]$\f[R] (it can be a single
+\f[C]$\f[R] character) then it is taken from the command line
+\f[C]-o\f[R] option.
 .IP \[bu] 2
 \f[B]finalwidth:\f[R] \f[B]\f[BI]size\f[B]\f[R]
 .PD 0

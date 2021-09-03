@@ -4,7 +4,7 @@
 
 # SYNOPSYS
 
-**imagelayout(.py)** [**-w**|**--watch**] [**-s**] [**-h|--help**] _configfile_
+**imagelayout(.py)** [**-w**|**--watch**] [**-s**] [**-o** _outputfile_] [**-h|--help**] _configfile_ [_imagefile_ [_imagefile_ ...]]
 
 NOTE: Depending on how you installed the program, the command is either 
 **imagelayout.py** or just **imagelayout**.
@@ -36,9 +36,15 @@ workflows.
   as soon as it changes.
 * **-s**\
   Report the pixel sizes of input images and exit.
+* **-o** _outputfile_\
+  Name of the output image file (optional)
 * **-h, --help**\
   Display short help message and exit.
-  
+* _configfile_\
+  The configuration file (yaml format)
+* _imagefile(s)_\
+  Optionally, the image files to be used as inputs can be specified here.
+
 # DEFINING THE IMAGE LAYOUT
 
 The desired layout of the images can be defined as a combination of
@@ -96,12 +102,52 @@ highest image), and vertically joined images will be
 resized to fit the same width (the widest image). If the **fixedsize** option
 is used for an image, it will be padded rather than scaled.
 
+# INPUT AND OUTPUT FILE NAMES
+
+The names of the input and output image file names can be specified in the configuration
+file. However, to facilitate the use of `imagelayout.py` in scripts
+and Makefiles, the file names can also be provided on the command line.
+
+Input file names can be provided on the command line after the
+configuration file name. In this case, you can refer to them in the
+configuration file as `$1`, `$2`, etc. For example, if the command
+line is
+
+~~~
+imagelayout.py config.yaml image1.png image2.jpg image3.png
+~~~
+
+then you can refer to the three input image files in the configuration
+file as follows:
+
+~~~
+images:
+  A: $1
+  B: $2
+  C: $3
+~~~
+
+To specify the output file name on the command line, the `-o` option
+can be used. In this case, you can refer to it in the configuration
+file as any string starting with a `$` (a single `$` is enough). For
+example, if the command line is
+
+~~~
+imagelayout.py -o output.png config.yaml
+~~~
+
+then you refer to the output file in the configuration file as follows:
+
+~~~
+outputfile: $
+~~~
+
 # CONFIGURATION FILE
 
-The only command line argument to **imagelayout** is the configuration
-file _configfile_, which should be written as a YAML format file, and
-contains all information about the input/output files, the layout, and
-the requested operations.
+The only mandatory command line argument to **imagelayout** is the
+configuration file _configfile_, which should be written as a YAML
+format file, and contains all information about the input/output
+files, the layout, and the requested operations.
 
 The two main mandatory parts of the configuration file are the
 **images** section and the **layout** section; in addition the output
@@ -148,7 +194,7 @@ Windows as `arialbd` (as the `\Windows\Fonts` directory contains the
 * **inputdir:** _**directoryname**_\
   Input directory; input image files will be loaded from here
 * **images:**\
-  Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters.
+  Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters. Note: A file name like `$1`, `$2`, etc. indicates that the file name should be taken from the command line (see manual).
     * **_imageid_:** **_filename_**\
       An identifier and a filename. If you don't want to specify any further parameters for the image other than the filename then this form can be used. Otherwise, see below.
     * **_imageid_:**\
@@ -189,30 +235,30 @@ Windows as `arialbd` (as the `\Windows\Fonts` directory contains the
   The layout of the output image is specified here. It can be omitted if there is only one input image.
     * **vjoin | hjoin:**\
       Join the following images vertically (**vjoin**) or horizontally (**hjoin**). Must be followed by a list of the images to join. List elements can be further **hjoin**/**vjoin** lists and individual images. The list can be specified either on the same line in bracket notation (e.g. `vjoin: [A, B, C]`) or on separate lines using the dash notation, e.g.
-      
+                
       ```
       vjoin:
-        - A
-        - B
-        - C
+                  - A
+                  - B
+                  - C
       ```
       
         * **- vjoin: | hjoin: | _imageid_**\
           List element: another list of images to join vertically or horizontally, or an image identifier for an individual image.
         * ... \
           Images and **vjoin**/**hjoin** 
-          lists can be arbitrarily combined and nested. Example:
-          
+                        lists can be arbitrarily combined and nested. Example:
+                        
           ```
           vjoin:
-            - hjoin: [A, B, C]
-            - hjoin:
-              - D
-              - vjoin: [E, F]
+                          - hjoin: [A, B, C]
+                          - hjoin:
+                            - D
+                            - vjoin: [E, F]
           ```
           
 * **outputfile:** **_filename_**\
-  Name of the output file relative to the current directory. The extension will determine the image file type. See [Pillow documentation](https://pillow.readthedocs.io/en/3.1.x/handbook/image-file-formats.html) for the available file formats.
+  Name of the output file relative to the current directory. The extension will determine the image file type. See [Pillow documentation](https://pillow.readthedocs.io/en/3.1.x/handbook/image-file-formats.html) for the available file formats. Note: If the file name starts with a `$` (it can be a single `$` character) then it is taken from the command line `-o` option.
 * **finalwidth:** **_size_**\
   The final width of the output image after joining the individual images. The image will be resized to fit this value, retaining the aspect ratio unless **finalheight** is also provided. Note that this is before the **title** and the **globalborder** are added. Optional. If not given, and **finalheight** is also omitted, the image will not be resized.
 * **finalheight:** **_size_**\

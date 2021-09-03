@@ -1,8 +1,8 @@
-* imagelayout yaml configuration file
+﻿* imagelayout yaml configuration file
     * **inputdir:** __**directoryname**__
       Input directory; input image files will be loaded from here
     * **images:**
-      Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters.
+      Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters. Note: A file name like `$1`, `$2`, etc. indicates that the file name should be taken from the command line (see manual).
         * **__imageid__:** **__filename__**
           An identifier and a filename. If you don't want to specify any further parameters for the image other than the filename then this form can be used. Otherwise, see below.
         * **__imageid__:**
@@ -43,22 +43,22 @@
       The layout of the output image is specified here. It can be omitted if there is only one input image.
         * **vjoin | hjoin:**
           Join the following images vertically (**vjoin**) or horizontally (**hjoin**). Must be followed by a list of the images to join. List elements can be further **hjoin**/**vjoin** lists and individual images. The list can be specified either on the same line in bracket notation (e.g. `vjoin: [A, B, C]`) or on separate lines using the dash notation, e.g.
-`vjoin:
-  - A
-  - B
-  - C`
+          `vjoin:
+            - A
+            - B
+            - C`
             * **- vjoin: | hjoin: | __imageid__**
               List element: another list of images to join vertically or horizontally, or an image identifier for an individual image.
             * ... 
               Images and **vjoin**/**hjoin** 
-lists can be arbitrarily combined and nested. Example:
-`vjoin:
-  - hjoin: [A, B, C]
-  - hjoin:
-    - D
-    - vjoin: [E, F]`
+              lists can be arbitrarily combined and nested. Example:
+              `vjoin:
+                - hjoin: [A, B, C]
+                - hjoin:
+                  - D
+                  - vjoin: [E, F]`
     * **outputfile:** **__filename__**
-      Name of the output file relative to the current directory. The extension will determine the image file type. See [Pillow documentation](https://pillow.readthedocs.io/en/3.1.x/handbook/image-file-formats.html) for the available file formats.
+      Name of the output file relative to the current directory. The extension will determine the image file type. See [Pillow documentation](https://pillow.readthedocs.io/en/3.1.x/handbook/image-file-formats.html) for the available file formats. Note: If the file name starts with a `$` (it can be a single `$` character) then it is taken from the command line `-o` option.
     * **finalwidth:** **__size__**
       The final width of the output image after joining the individual images. The image will be resized to fit this value, retaining the aspect ratio unless **finalheight** is also provided. Note that this is before the **title** and the **globalborder** are added. Optional. If not given, and **finalheight** is also omitted, the image will not be resized.
     * **finalheight:** **__size__**
