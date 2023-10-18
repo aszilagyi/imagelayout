@@ -17,7 +17,7 @@ images: # input images are specified here
       fontname: Arial_Bold # optional, supersedes global setting for this image
       fontsize: 30 # in pixels
       fontcolor: red
-      pos: center left
+      pos: center-left
       offset: [10, 10] # in pixels
     fixedsize: yes # use padding for this image instead of resizing
   E:
@@ -32,7 +32,7 @@ layout: # layout is defined here
     - C
     - hjoin:
         - D
-	- E
+        - E
 outputfile: output.png # extension determines file type
 finalwidth: 1024 # in pixels, resize output to this width
 finalheight: 800 # resize output to this height
@@ -42,12 +42,12 @@ paddingcolor: white # for padding and background color
 border: # draw border around each input image
   size: 30 # pixels
   color: gray
-labels: how to label the images
+labels: # how to label the images
   add: yes # default is no
   fontname: FreeSans # global setting, can be superseded for individual images
   fontsize: 32
   fontcolor: black
-  pos: top right
+  pos: top-right
   offset: [5, 5]
 globallabels: # add arbitrary labels to final image
   fontname: FreeSans # global setting for globallabels
