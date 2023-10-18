@@ -2,7 +2,7 @@
 * **inputdir:** _**directoryname**_\
   Input directory; input image files will be loaded from here
 * **images:**\
-  Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters. Note: A file name like `$1`, `$2`, etc. indicates that the file name should be taken from the command line (see manual).
+  Input images are specified here. Each file must have an identifier, and either a single file name or a number of parameters. Note: A file name like `$1`, `$2`, etc. indicates that the file name should be taken from the command line (see manual). If the file name is `BLANK-`W`x`H, e.g. `BLANK-640x480` then a blank image of the given size will be generated; this can be used as a placeholder; identifiers of blank images will not be displayed as labels.
     * **_imageid_:** **_filename_**\
       An identifier and a filename. If you don't want to specify any further parameters for the image other than the filename then this form can be used. Otherwise, see below.
     * **_imageid_:**\

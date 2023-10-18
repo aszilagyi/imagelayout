@@ -26,6 +26,7 @@ images: # input images are specified here
     border: # add a border
       size: [30, 10] # 30px left/right, 10px top/bottom
       color: '#fa105e' # use quotes as # is taken as comment otherwise
+  F: BLANK-640x480   # blank image of the given size as a placeholder
 layout: # layout is defined here
   vjoin:
     - hjoin: [A, B]

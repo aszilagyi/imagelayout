@@ -62,7 +62,15 @@ def imagelayout(conf, reportsizes=False, imagefiles=[], outputfile=''):
             imgdata[imgid] = {'file':imgdata[imgid]}
         if imgdata[imgid]['file'][0] == '$': # file name is taken from command line argument
             imgdata[imgid]['file'] = imagefiles[int(imgdata[imgid]['file'][1:])-1]
-        im = Image.open(os.path.join(wd, imgdata[imgid]['file']))
+        if imgdata[imgid]['file'].startswith('BLANK-'): # use a blank image
+            w, h = [int(s) for s in imgdata[imgid]['file'].split('-')[1].split('x')]
+            im = Image.new('RGBA', (w, h), color=conf.get('paddingcolor', 'white'))
+            if 'label' not in imgdata[imgid]:
+                imgdata[imgid]['label'] = {'text': ''}
+            elif 'text' not in imgdata[imgid]['label']:
+                imgdata[imgid]['label']['text'] = ''
+        else:
+            im = Image.open(os.path.join(wd, imgdata[imgid]['file']))
         imgdata[imgid]['size'] = (0, 0, *im.size)
         imgdata[imgid]['parts'] = [imgid]
         imgdata[imgid]['img'] = im

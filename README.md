@@ -138,6 +138,16 @@ layout:
     - vjoin: [C, F, I]
 ```
 
+## GENERATING BLANK IMAGES AS PLACEHOLDERS
+
+Sometimes, you want to arrange your images into a grid but you must
+leave out a few cells in a grid because you don't have enough images,
+e.g. you want to use a 3x2 grid but you only have 5 images. In this
+case, you can provide a filename in the format `BLANK-`W`x`H, e.g.
+`BLANK-640x480`. `imagelayout` will recognize the pattern and
+automatically generate a blank image of the given size to use as a
+placeholder. The label of the placeholder will be hidden by default.
+
 ## SINGLE-IMAGE USE
 
 Although the main purpose of `imagelayout` is to combine multiple
